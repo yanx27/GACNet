@@ -1,7 +1,7 @@
 # Graph Attention Convolution for Point Cloud Segmentation
 
 This is pytorch implmentation of GACNet, but **not official version**.
-![](picture)
+![](pic.png)
 
 ## Download data
 Run `download_data.sh` and save dataset in `./indoor3d_sem_seg_hdf5_data/`
