@@ -58,7 +58,6 @@ def main(args):
     file_handler.setLevel(logging.INFO)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
-    logger.info('---------------------------------------------------TRANING---------------------------------------------------')
     logger.info('PARAMETER ...')
     logger.info(args)
     print('Load data...')
