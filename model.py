@@ -161,11 +161,13 @@ class GraphAttention(nn.Module):
 
     def forward(self, center_xyz, center_feature, grouped_xyz, grouped_feature):
         '''
-        :param center_xyz: sampled points position data, [B, npoint, C]
-        :param center_feature: centered point feature [B, npoint, D]
-        :param grouped_xyz: group xyz data [B, npoint, nsample, C]
-        :param grouped_feature:  sampled points feature, [B, npoint, nsample, D]
-        :return: [B, npoint, D]
+        Input:
+            center_xyz: sampled points position data [B, npoint, C]
+            center_feature: centered point feature [B, npoint, D]
+            grouped_xyz: group xyz data [B, npoint, nsample, C]
+            grouped_feature: sampled points feature [B, npoint, nsample, D]
+        Return: 
+            graph_pooling: results of graph pooling [B, npoint, D]
         '''
         B, npoint, C = center_xyz.size()
         _, _, nsample, D = grouped_feature.size()
