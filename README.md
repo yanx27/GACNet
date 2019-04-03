@@ -1,6 +1,6 @@
 # Graph Attention Convolution for Point Cloud Segmentation
 
-This is pytorch implmentation of GACNet on S3DIS dataset, but **not official version**.
+This is personal pytorch implmentation of GACNet on S3DIS dataset, but **not official version**.
 ![](pic.png)
 
 ## Download Data
