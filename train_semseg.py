@@ -143,11 +143,12 @@ def main(args):
         #
 
         test_metrics, test_hist_acc, cat_mean_iou = test_seg(model, testdataloader, seg_label_to_cat)
+        mean_iou = np.mean(cat_mean_iou)
 
         print('Epoch %d  %s accuracy: %f  meanIOU: %f' % (
-                 epoch, blue('test'), test_metrics['accuracy'],np.mean(cat_mean_iou)))
+                 epoch, blue('test'), test_metrics['accuracy'],mean_iou))
         logger.info('Epoch %d  %s accuracy: %f  meanIOU: %f' % (
-                 epoch, 'test', test_metrics['accuracy'],np.mean(cat_mean_iou)))
+                 epoch, 'test', test_metrics['accuracy'],mean_iou))
         if test_metrics['accuracy'] > best_acc:
             best_acc = test_metrics['accuracy']
             torch.save(model.state_dict(), '%s/GACNet_%.3d_%.4f.pth' % (checkpoints_dir, epoch, best_acc))
@@ -155,8 +156,8 @@ def main(args):
             logger.info('Save model..')
             print('Save model..')
             print(cat_mean_iou)
-        if test_metrics['iou'] > best_meaniou:
-            best_meaniou = test_metrics['iou']
+        if mean_iou > best_meaniou:
+            best_meaniou = mean_iou
         print('Best accuracy is: %.5f'%best_acc)
         logger.info('Best accuracy is: %.5f'%best_acc)
         print('Best meanIOU is: %.5f'%best_meaniou)
