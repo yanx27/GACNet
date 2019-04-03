@@ -13,6 +13,6 @@ Run `python train_semseg.py`
 It is only a **personal implmentation**, and the experimental results **do not represent the model in paper**. There are still many hyper parameters that need to be adjusted when the author publishes the source code.
 
 ## Environments
-Ubuntu 16.04 
-Python 3.6.5 
-Pytorch 0.4.1 
+Ubuntu 16.04 <br>
+Python 3.6.5 <br>
+Pytorch 0.4.1 <br>
