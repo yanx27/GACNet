@@ -288,7 +288,7 @@ class PointNetFeaturePropagation(nn.Module):
 
 
 class GACNet(nn.Module):
-    def __init__(self, num_classes,droupout=1,alpha=0.2):
+    def __init__(self, num_classes,droupout=0,alpha=0.2):
         super(GACNet, self).__init__()
         # GraphAttentionConvLayer: npoint, radius, nsample, in_channel, mlp, group_all,droupout,alpha
         self.sa1 = GraphAttentionConvLayer(1024, 0.1, 32, 6 + 3, [32, 32, 64], False, droupout,alpha)
