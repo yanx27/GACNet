@@ -68,7 +68,7 @@ def main(args):
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=args.batchSize,
                                              shuffle=True, num_workers=int(args.workers))
     test_dataset = S3DISDataLoader(test_data,test_label)
-    testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=14,
+    testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=8,
                                                  shuffle=True, num_workers=int(args.workers))
 
     num_classes = 13
