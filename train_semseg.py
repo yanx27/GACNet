@@ -24,18 +24,18 @@ for i,cat in enumerate(seg_classes.keys()):
 
 def parse_args():
     parser = argparse.ArgumentParser('GACNet')
-    parser.add_argument('--batchSize', type=int, default=24, help='input batch size')
-    parser.add_argument('--workers', type=int, default=4, help='number of data loading workers')
-    parser.add_argument('--epoch', type=int, default=201, help='number of epochs for training')
+    parser.add_argument('--batchSize', type=int, default=24, help='input batch size [default: 24]')
+    parser.add_argument('--workers', type=int, default=4, help='number of data loading workers [default: 4]')
+    parser.add_argument('--epoch', type=int, default=200, help='number of epochs for training [default: 200]')
     parser.add_argument('--log_dir', type=str, default='logs/',help='decay rate of learning rate')
     parser.add_argument('--pretrain', type=str, default=None,help='whether use pretrain model')
     parser.add_argument('--gpu', type=str, default='0', help='specify gpu device')
     parser.add_argument('--learning_rate', type=float, default=0.01, help='learning rate for training [default: 0.001 for Adam, 0.01 for SGD]')
-    parser.add_argument('--decay_rate', type=float, default=1e-4, help='weight decay')
+    parser.add_argument('--decay_rate', type=float, default=1e-4, help='weight decay for Adam')
     parser.add_argument('--optimizer', type=str, default='SGD', help='type of optimizer')
     parser.add_argument('--multi_gpu', type=str, default=None, help='whether use multi gpu training')
-    parser.add_argument('--dropout', type=float, default=1, help='dropout')
-    parser.add_argument('--alpha', type=float, default=0.2, help='alpha for leakyRelu')
+    parser.add_argument('--dropout', type=float, default=0, help='dropout [default: 0]')
+    parser.add_argument('--alpha', type=float, default=0.2, help='alpha for leakyRelu [default: 0.2]')
     return parser.parse_args()
 
 def main(args):
