@@ -30,7 +30,7 @@ def parse_args():
     parser.add_argument('--log_dir', type=str, default='logs/',help='decay rate of learning rate')
     parser.add_argument('--pretrain', type=str, default=None,help='whether use pretrain model')
     parser.add_argument('--gpu', type=str, default='0', help='specify gpu device')
-    parser.add_argument('--learning_rate', type=float, default=0.001, help='learning rate for training')
+    parser.add_argument('--learning_rate', type=float, default=0.01, help='learning rate for training [default: 0.001 for Adam, 0.01 for SGD]')
     parser.add_argument('--decay_rate', type=float, default=1e-4, help='weight decay')
     parser.add_argument('--optimizer', type=str, default='SGD', help='type of optimizer')
     parser.add_argument('--multi_gpu', type=str, default=None, help='whether use multi gpu training')
@@ -92,7 +92,7 @@ def main(args):
             param_group['lr'] = lr
 
     if args.optimizer == 'SGD':
-        optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+        optimizer = torch.optim.SGD(model.parameters(), lr=args.learning_rate, momentum=0.9)
     elif args.optimizer == 'Adam':
         optimizer = torch.optim.Adam(
             model.parameters(),
@@ -140,6 +140,7 @@ def main(args):
         #         epoch, blue('train'), history['loss'][-1], train_metrics['accuracy'],np.mean(cat_mean_iou)))
         #     logger.info('Epoch %d  %s loss: %f accuracy: %f  meanIOU: %f' % (
         #         epoch, 'train', history['loss'][-1], train_metrics['accuracy'],np.mean(cat_mean_iou)))
+        #
 
         test_metrics, test_hist_acc, cat_mean_iou = test_seg(model, testdataloader, seg_label_to_cat)
         mean_iou = np.mean(cat_mean_iou)
