@@ -18,13 +18,13 @@ import warnings
 warnings.filterwarnings("ignore")
 
 seg_classes = class2label
-seg_label_to_cat = {} 
+seg_label_to_cat = {}
 for i,cat in enumerate(seg_classes.keys()):
     seg_label_to_cat[i] = cat
 
 def parse_args():
     parser = argparse.ArgumentParser('GACNet')
-    parser.add_argument('--batchSize', type=int, default=8, help='input batch size')
+    parser.add_argument('--batchSize', type=int, default=24, help='input batch size')
     parser.add_argument('--workers', type=int, default=4, help='number of data loading workers')
     parser.add_argument('--epoch', type=int, default=201, help='number of epochs for training')
     parser.add_argument('--log_dir', type=str, default='logs/',help='decay rate of learning rate')
@@ -32,9 +32,10 @@ def parse_args():
     parser.add_argument('--gpu', type=str, default='0', help='specify gpu device')
     parser.add_argument('--learning_rate', type=float, default=0.001, help='learning rate for training')
     parser.add_argument('--decay_rate', type=float, default=1e-4, help='weight decay')
-    parser.add_argument('--optimizer', type=str, default='Adam', help='type of optimizer')
+    parser.add_argument('--optimizer', type=str, default='SGD', help='type of optimizer')
     parser.add_argument('--multi_gpu', type=str, default=None, help='whether use multi gpu training')
-
+    parser.add_argument('--dropout', type=float, default=1, help='dropout')
+    parser.add_argument('--alpha', type=float, default=0.2, help='alpha for leakyRelu')
     return parser.parse_args()
 
 def main(args):
@@ -67,12 +68,12 @@ def main(args):
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=args.batchSize,
                                              shuffle=True, num_workers=int(args.workers))
     test_dataset = S3DISDataLoader(test_data,test_label)
-    testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=8,
+    testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=args.batchSize,
                                                  shuffle=True, num_workers=int(args.workers))
 
     num_classes = 13
     blue = lambda x: '\033[94m' + x + '\033[0m'
-    model = GACNet(num_classes)
+    model = GACNet(num_classes,args.dropout,args.alpha)
 
     if args.pretrain is not None:
         model.load_state_dict(torch.load(args.pretrain))
@@ -123,7 +124,7 @@ def main(args):
             points, target = points.cuda(), target.cuda()
             optimizer.zero_grad()
             model = model.train()
-            pred, _ = model(points[:,:3,:],points[:,3:,:])
+            pred = model(points[:,:3,:],points[:,3:,:])
             pred = pred.contiguous().view(-1, num_classes)
             target = target.view(-1, 1)[:, 0]
             loss = F.nll_loss(pred, target)
@@ -139,6 +140,7 @@ def main(args):
         #         epoch, blue('train'), history['loss'][-1], train_metrics['accuracy'],np.mean(cat_mean_iou)))
         #     logger.info('Epoch %d  %s loss: %f accuracy: %f  meanIOU: %f' % (
         #         epoch, 'train', history['loss'][-1], train_metrics['accuracy'],np.mean(cat_mean_iou)))
+        #
 
         test_metrics, test_hist_acc, cat_mean_iou = test_seg(model, testdataloader, seg_label_to_cat)
 
