@@ -68,7 +68,7 @@ def main(args):
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=args.batchSize,
                                              shuffle=True, num_workers=int(args.workers))
     test_dataset = S3DISDataLoader(test_data,test_label)
-    testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=args.batchSize,
+    testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=14,
                                                  shuffle=True, num_workers=int(args.workers))
 
     num_classes = 13
@@ -140,7 +140,6 @@ def main(args):
         #         epoch, blue('train'), history['loss'][-1], train_metrics['accuracy'],np.mean(cat_mean_iou)))
         #     logger.info('Epoch %d  %s loss: %f accuracy: %f  meanIOU: %f' % (
         #         epoch, 'train', history['loss'][-1], train_metrics['accuracy'],np.mean(cat_mean_iou)))
-        #
 
         test_metrics, test_hist_acc, cat_mean_iou = test_seg(model, testdataloader, seg_label_to_cat)
         mean_iou = np.mean(cat_mean_iou)
