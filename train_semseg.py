@@ -18,7 +18,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 seg_classes = class2label
-seg_label_to_cat = {} # {0:Airplane, 1:Airplane, ...49:Table}
+seg_label_to_cat = {} 
 for i,cat in enumerate(seg_classes.keys()):
     seg_label_to_cat[i] = cat
 
@@ -140,7 +140,6 @@ def main(args):
         #         epoch, blue('train'), history['loss'][-1], train_metrics['accuracy'],np.mean(cat_mean_iou)))
         #     logger.info('Epoch %d  %s loss: %f accuracy: %f  meanIOU: %f' % (
         #         epoch, 'train', history['loss'][-1], train_metrics['accuracy'],np.mean(cat_mean_iou)))
-        #
 
         test_metrics, test_hist_acc, cat_mean_iou = test_seg(model, testdataloader, seg_label_to_cat)
 
